@@ -1,0 +1,42 @@
+digraph UseCase {
+  rankdir=LR; fontname="DejaVu Sans"; labelloc=t; fontsize=18;
+  label="Диаграмма вариантов использования — Продуктовый интернет-магазин";
+  node [fontname="DejaVu Sans", fontsize=11]; edge [fontname="DejaVu Sans", fontsize=10];
+  splines=true; nodesep=0.35; ranksep=1.6;
+
+  Client [label="Клиент", shape=box, style="filled", fillcolor="#FFF2CC", width=1.2, height=0.7];
+  Admin  [label="Администратор\n(и курьер)", shape=box, style="filled", fillcolor="#FFF2CC", width=1.4, height=0.7];
+  Pay    [label="Платёжная\nсистема", shape=box, style="filled,dashed", fillcolor="#E1D5E7", width=1.2, height=0.7];
+
+  subgraph cluster_sys {
+    label="Система «Продуктовый интернет-магазин»"; style="rounded"; color="#555555"; fontsize=13;
+    node [shape=ellipse, style=filled, fillcolor="#DAE8FC"];
+    UC1 [label="Регистрация\nи авторизация\n(BR-01)"];
+    UC2 [label="Просмотр каталога\n(BR-02)"];
+    UC3 [label="Поиск и фильтрация\n(BR-03)"];
+    UC4 [label="Добавление\nв корзину (BR-04)"];
+    UC5 [label="Оформление заказа\n(BR-05)"];
+    UC5a [label="Проверить наличие\nтовара", fillcolor="#D5E8D4"];
+    UC5b [label="Рассчитать\nстоимость", fillcolor="#D5E8D4"];
+    UC6 [label="Оплата заказа\n(BR-06)"];
+    UC7 [label="Отслеживание\nзаказа (BR-07)"];
+    UC8 [label="Управление\nтоварами (BR-08)"];
+    UC9 [label="Управление статусами\nзаказов (BR-09)"];
+  }
+
+  Client -> UC1 [arrowhead=none];
+  Client -> UC2 [arrowhead=none];
+  Client -> UC3 [arrowhead=none];
+  Client -> UC4 [arrowhead=none];
+  Client -> UC5 [arrowhead=none];
+  Client -> UC6 [arrowhead=none];
+  Client -> UC7 [arrowhead=none];
+  Admin -> UC1 [arrowhead=none];
+  Admin -> UC8 [arrowhead=none];
+  Admin -> UC9 [arrowhead=none];
+  UC6 -> Pay [arrowhead=none];
+
+  UC5 -> UC5a [style=dashed, label="«include»", arrowhead=open];
+  UC5 -> UC5b [style=dashed, label="«include»", arrowhead=open];
+  UC3 -> UC2 [style=dashed, label="«extend»", arrowhead=open, constraint=false];
+}

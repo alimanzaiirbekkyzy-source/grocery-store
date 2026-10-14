@@ -1,0 +1,84 @@
+digraph Classes {
+  rankdir=BT; fontname="DejaVu Sans"; labelloc=t; fontsize=18; nodesep=0.7; ranksep=0.9;
+  label="Диаграмма классов — Продуктовый интернет-магазин";
+  node [shape=plain, fontname="DejaVu Sans", fontsize=10]; edge [fontname="DejaVu Sans", fontsize=10];
+
+  User [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>User</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- name: str<br align="left"/>- email: str<br align="left"/>- passwordHash: str<br align="left"/>- role: Role<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ is_admin(): bool<br align="left"/></td></tr></table>>];
+
+  Product [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>Product</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- name: str<br align="left"/>- description: str<br align="left"/>- price: Decimal<br align="left"/>- quantity: Decimal<br align="left"/>- category: str<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ is_available(qty): bool<br align="left"/></td></tr></table>>];
+
+  Cart [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>Cart</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- userId: int<br align="left"/>- createdAt: datetime<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ addProduct(p, qty)<br align="left"/>+ setQuantity(pid, qty)<br align="left"/>+ removeProduct(pid)<br align="left"/>+ clear()<br align="left"/>+ total(): Decimal<br align="left"/></td></tr></table>>];
+
+  CartItem [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>CartItem</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- quantity: Decimal<br align="left"/>- price: Decimal<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ subtotal(): Decimal<br align="left"/></td></tr></table>>];
+
+  Order [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>Order</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- orderDate: datetime<br align="left"/>- status: OrderStatus<br align="left"/>- address: str<br align="left"/>- deliveryTime: str<br align="left"/>- totalAmount: Decimal<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ changeStatus(s)<br align="left"/></td></tr></table>>];
+
+  OrderItem [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>OrderItem</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- quantity: Decimal<br align="left"/>- price: Decimal<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ subtotal(): Decimal<br align="left"/></td></tr></table>>];
+
+  Payment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DAE8FC">
+    <tr><td><b>Payment</b></td></tr><hr/>
+    <tr><td align="left">- id: int<br align="left"/>- amount: Decimal<br align="left"/>- date: datetime<br align="left"/>- status: PaymentStatus<br align="left"/>- method: str<br align="left"/></td></tr></table>>];
+
+  IPayment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#E1D5E7">
+    <tr><td>«interface»<br/><b><i>IPayment</i></b></td></tr><hr/>
+    <tr><td align="left">+ pay(amount): PaymentResult<br align="left"/></td></tr></table>>];
+
+  CardPayment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#D5E8D4">
+    <tr><td><b>CardPayment</b></td></tr><hr/>
+    <tr><td align="left">- cardNumber: str<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ pay(amount)<br align="left"/>+ refund(txId, amount)<br align="left"/></td></tr></table>>];
+  CashPayment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#D5E8D4">
+    <tr><td><b>CashPayment</b></td></tr><hr/>
+    <tr><td align="left">- cashGiven: Decimal<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ pay(amount)<br align="left"/></td></tr></table>>];
+  SBPPayment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#D5E8D4">
+    <tr><td><b>SBPPayment</b></td></tr><hr/>
+    <tr><td align="left">- phone: str<br align="left"/></td></tr><hr/>
+    <tr><td align="left">+ pay(amount)<br align="left"/>+ refund(txId, amount)<br align="left"/></td></tr></table>>];
+
+  IRefundable [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#E1D5E7">
+    <tr><td>«interface»<br/><b><i>IRefundable</i></b></td></tr><hr/>
+    <tr><td align="left">+ refund(txId, amount)<br align="left"/></td></tr></table>>];
+
+  OrderService [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#FFF2CC">
+    <tr><td><b>OrderService</b></td></tr><hr/>
+    <tr><td align="left">+ checkout(user, cart, address, time)<br align="left"/>+ pay(order, IPayment)<br align="left"/>+ updateStatus(actor, id, status)<br align="left"/>+ history(user)<br align="left"/>+ track(user, id)<br align="left"/></td></tr></table>>];
+
+  // Композиция (ромб у целого)
+  OrderItem -> Order   [arrowhead=diamond, headlabel="1", taillabel="1..*", labelfontsize=10, labeldistance=1.8];
+  CartItem  -> Cart    [arrowhead=diamond, headlabel="1", taillabel="0..*", labeldistance=1.8];
+  // Агрегация (пустой ромб у целого)
+  Product -> CartItem  [arrowhead=odiamond, taillabel="1", headlabel="0..*", labeldistance=1.8, dir=both, arrowtail=none];
+  Product -> OrderItem [arrowhead=odiamond, taillabel="1", headlabel="0..*", labeldistance=1.8];
+  // Ассоциации
+  Order -> User    [arrowhead=none, taillabel="0..*", headlabel="1", label="делает", labeldistance=2];
+  Cart  -> User    [arrowhead=none, taillabel="0..1", headlabel="1", label="принадлежит", labeldistance=2];
+  Payment -> Order [arrowhead=none, taillabel="0..1", headlabel="1", label="оплачивает", labeldistance=2];
+  // Реализация
+  CardPayment -> IPayment [arrowhead=empty, style=dashed];
+  CashPayment -> IPayment [arrowhead=empty, style=dashed];
+  SBPPayment  -> IPayment [arrowhead=empty, style=dashed];
+  CardPayment -> IRefundable [arrowhead=empty, style=dashed];
+  SBPPayment  -> IRefundable [arrowhead=empty, style=dashed];
+  // Зависимость
+  OrderService -> IPayment [arrowhead=open, style=dashed, label="«uses»"];
+  OrderService -> Order    [arrowhead=open, style=dashed, label="«manages»"];
+}

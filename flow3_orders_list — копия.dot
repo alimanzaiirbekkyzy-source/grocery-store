@@ -1,0 +1,22 @@
+digraph F3 { fontname="DejaVu Sans"; labelloc=t; fontsize=18; node [fontname="DejaVu Sans", fontsize=11, style=filled, fillcolor="#DAE8FC"]; edge [fontname="DejaVu Sans", fontsize=10]; ranksep=0.45;
+  label="Блок-схема 3 — Просмотр списка заказов (клиент / администратор)";
+  start [label="Начало", shape=oval, fillcolor="#D5E8D4"];
+  a [label="Авторизация\nпользователя", shape=box];
+  d0 [label="Авторизован?", shape=diamond, fillcolor="#FFF2CC"];
+  e0 [label="Переход на\nстраницу входа", shape=box, fillcolor="#F8CECC"];
+  d1 [label="Роль\nпользователя?", shape=diamond, fillcolor="#FFF2CC"];
+  c1 [label="Выбрать заказы\nтолько этого клиента", shape=box];
+  c2 [label="Показать историю покупок\nи текущие статусы", shape=box, fillcolor="#D5E8D4"];
+  a1 [label="Выбрать все заказы\n(фильтр по статусу)", shape=box];
+  a2 [label="Показать заказы для сборки\nи передачи курьеру", shape=box, fillcolor="#D5E8D4"];
+  d2 [label="Изменить статус\nзаказа?", shape=diamond, fillcolor="#FFF2CC"];
+  a3 [label="Выбрать новый статус\nи сохранить", shape=box];
+  end [label="Конец", shape=oval, fillcolor="#D5E8D4"];
+  start->a->d0;
+  d0->e0 [label="Нет"]; e0->a;
+  d0->d1 [label="Да"];
+  d1->c1 [label="Клиент"]; c1->c2->end;
+  d1->a1 [label="Администратор"]; a1->a2->d2;
+  d2->a3 [label="Да"]; a3->a2 [label="обновить список"];
+  d2->end [label="Нет"];
+}

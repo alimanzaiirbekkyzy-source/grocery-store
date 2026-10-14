@@ -1,0 +1,20 @@
+digraph F1 { fontname="DejaVu Sans"; labelloc=t; fontsize=18; node [fontname="DejaVu Sans", fontsize=11, style=filled, fillcolor="#DAE8FC"]; edge [fontname="DejaVu Sans", fontsize=10]; ranksep=0.45;
+  label="Блок-схема 1 — Оформление и оплата заказа";
+  start [label="Начало", shape=oval, fillcolor="#D5E8D4"];
+  s1 [label="Выбор продуктов\nиз каталога", shape=box];
+  s2 [label="Добавление в корзину\n(кол-во / вес)", shape=box];
+  s3 [label="Оформление заказа:\nадрес и время доставки", shape=box];
+  d1 [label="Все товары\nв наличии?", shape=diamond, fillcolor="#FFF2CC"];
+  e1 [label="Сообщение\nоб отсутствии товара", shape=box, fillcolor="#F8CECC"];
+  s4 [label="Расчёт стоимости\n(товары + доставка)", shape=box];
+  s5 [label="Выбор способа оплаты\n(карта / наличные / СБП)", shape=box];
+  s6 [label="Оплата", shape=box];
+  d2 [label="Оплата\nуспешна?", shape=diamond, fillcolor="#FFF2CC"];
+  s7 [label="Подтверждение заказа\nстатус «Оплачен»", shape=box, fillcolor="#D5E8D4"];
+  end [label="Конец", shape=oval, fillcolor="#D5E8D4"];
+  start->s1->s2->s3->d1;
+  d1->e1 [label="Нет"]; e1->s2 [label="изменить корзину"];
+  d1->s4 [label="Да"]; s4->s5->s6->d2;
+  d2->s7 [label="Да"]; d2->s5 [label="Нет:\nповторить"];
+  s7->end;
+}

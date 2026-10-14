@@ -1,0 +1,18 @@
+digraph F2 { fontname="DejaVu Sans"; labelloc=t; fontsize=18; node [fontname="DejaVu Sans", fontsize=11, style=filled, fillcolor="#DAE8FC"]; edge [fontname="DejaVu Sans", fontsize=10]; ranksep=0.45;
+  label="Блок-схема 2 — Поиск продуктов с фильтрами";
+  start [label="Начало", shape=oval, fillcolor="#D5E8D4"];
+  i1 [label="Ввод названия\nв поисковую строку", shape=parallelogram];
+  i2 [label="Ввод фильтров\n(категория, мин./макс. цена)", shape=parallelogram];
+  d1 [label="Запрос корректен?\n(не пустой, цена ≥ 0,\nмин ≤ макс)", shape=diamond, fillcolor="#FFF2CC"];
+  e1 [label="Сообщение об ошибке\nввода", shape=box, fillcolor="#F8CECC"];
+  s1 [label="Запрос к базе\nданных каталога", shape=box];
+  d2 [label="Найден хотя бы\nодин продукт?", shape=diamond, fillcolor="#FFF2CC"];
+  r1 [label="Отображение списка\nрезультатов", shape=box, fillcolor="#D5E8D4"];
+  r2 [label="Сообщение\n«Ничего не найдено»", shape=box, fillcolor="#F8CECC"];
+  end [label="Конец", shape=oval, fillcolor="#D5E8D4"];
+  start->i1->i2->d1;
+  d1->e1 [label="Нет"]; e1->i1 [label="исправить"];
+  d1->s1 [label="Да"]; s1->d2;
+  d2->r1 [label="Да"]; d2->r2 [label="Нет"];
+  r1->end; r2->end;
+}
